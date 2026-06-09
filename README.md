@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🌾 Saffron Store - Premium E-Commerce Platform
 
 A fully-featured Django e-commerce platform for selling premium Kashmiri saffron with a responsive frontend, shopping cart, and payment integration.
@@ -180,3 +181,7 @@ Personal use license - Use for your own business
 ---
 
 **Ready to start selling premium saffron! 🌾✨**
+=======
+# saffron-store
+Saffron Store
+>>>>>>> e5a7e7b15419fe40de4151173a50594c21914182
