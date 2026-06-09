@@ -1,0 +1,166 @@
+/* Saffron Store Stylesheet */
+
+:root {
+    --saffron-color: #D4A574;
+    --dark-color: #1a1a1a;
+    --success-color: #28a745;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: var(--saffron-color) !important;
+}
+
+.page-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background-color: var(--saffron-color);
+    border-color: var(--saffron-color);
+}
+
+.btn-primary:hover {
+    background-color: #C89860;
+    border-color: #C89860;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.badge {
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+}
+
+footer {
+    border-top: 3px solid var(--saffron-color);
+    margin-top: 5rem;
+}
+
+footer a {
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--saffron-color) !important;
+}
+
+.product-card {
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.product-card:hover {
+    border-color: var(--saffron-color);
+}
+
+.table {
+    font-size: 0.95rem;
+}
+
+.table-light {
+    background-color: #f8f9fa;
+}
+
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.btn-group-sm > .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .table {
+        font-size: 0.85rem;
+    }
+    
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Loading animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--saffron-color);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Alert customization */
+.alert-info {
+    background-color: #e7f3ff;
+    border-color: #b3d9ff;
+    color: #004085;
+}
+
+/* Form styling */
+.form-control:focus {
+    border-color: var(--saffron-color);
+    box-shadow: 0 0 0 0.2rem rgba(212, 165, 116, 0.25);
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+/* Checkout form */
+#checkout-form .form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+/* Success message */
+.text-success {
+    color: var(--success-color) !important;
+}

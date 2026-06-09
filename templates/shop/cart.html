@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Shopping Cart - Saffron Store{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">🛒 Shopping Cart</h1>
+
+{% if cart_items %}
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Product</th>
+                                <th>Weight</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for cart_item in cart_items %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ cart_item.variant.product.get_absolute_url }}" class="text-decoration-none">
+                                            {{ cart_item.item.product_name }}
+                                        </a>
+                                    </td>
+                                    <td>{{ cart_item.item.weight_grams }}g</td>
+                                    <td>₹{{ cart_item.item.price }}</td>
+                                    <td>
+                                        <form method="post" action="{% url 'shop:update_cart' cart_item.variant.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <input type="number" name="quantity" value="{{ cart_item.item.quantity }}" 
+                                                   min="1" max="10" class="form-control" style="width: 70px;" onchange="this.form.submit()">
+                                        </form>
+                                    </td>
+                                    <td><strong>₹{{ cart_item.total }}</strong></td>
+                                    <td>
+                                        <form method="post" action="{% url 'shop:remove_from_cart' cart_item.variant.id %}" class="d-inline">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Subtotal:</span>
+                        <strong>₹{{ total_amount }}</strong>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Shipping:</span>
+                        <strong>Free</strong>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="h5">Total:</span>
+                        <strong class="h5 text-success">₹{{ total_amount }}</strong>
+                    </div>
+                    <a href="{% url 'shop:checkout' %}" class="btn btn-success btn-lg w-100">
+                        Proceed to Checkout
+                    </a>
+                    <a href="{% url 'shop:product_list' %}" class="btn btn-outline-secondary w-100 mt-2">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-3">
+                <small>
+                    <strong>💡 Tip:</strong> Orders above ₹500 get free shipping!
+                </small>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-info text-center py-5">
+        <h4>Your cart is empty</h4>
+        <p class="mb-3">Start shopping to add items to your cart.</p>
+        <a href="{% url 'shop:product_list' %}" class="btn btn-primary">Browse Products</a>
+    </div>
+{% endif %}
+
+{% endblock %}

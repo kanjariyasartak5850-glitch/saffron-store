@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - Saffron Store{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'shop:product_list' %}">Shop</a></li>
+        <li class="breadcrumb-item active">{{ product.name }}</li>
+    </ol>
+</nav>
+
+<div class="row g-5 mb-5">
+    <!-- Product Image -->
+    <div class="col-lg-6">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+        {% else %}
+            <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 500px;">
+                <span class="text-muted">No image available</span>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Product Details -->
+    <div class="col-lg-6">
+        <h1 class="display-5 mb-3">{{ product.name }}</h1>
+        
+        <div class="mb-4">
+            <p class="text-muted lead">🌍 <strong>Origin:</strong> {{ product.origin }}</p>
+            <p class="lead">{{ product.description }}</p>
+        </div>
+
+        <!-- Variants Selection -->
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Select Weight & Price</h5>
+            </div>
+            <div class="card-body">
+                {% if variants %}
+                    <form method="post" action="{% url 'shop:add_to_cart' variants.0.id %}" id="add-to-cart-form">
+                        {% csrf_token %}
+                        
+                        <div class="mb-4">
+                            <label class="form-label">Weight:</label>
+                            <div class="row">
+                                {% for variant in variants %}
+                                    {% if variant.stock > 0 %}
+                                        <div class="col-md-6 mb-2">
+                                            <input type="radio" class="btn-check variant-radio" 
+                                                   name="variant" id="variant_{{ variant.id }}" 
+                                                   value="{{ variant.id }}" data-price="{{ variant.price }}"
+                                                   {% if forloop.first %}checked{% endif %}>
+                                            <label class="btn btn-outline-primary w-100" for="variant_{{ variant.id }}">
+                                                {{ variant.weight_grams }}g - ₹{{ variant.price }}
+                                            </label>
+                                        </div>
+                                    {% else %}
+                                        <div class="col-md-6 mb-2">
+                                            <button type="button" class="btn btn-secondary w-100" disabled>
+                                                {{ variant.weight_grams }}g - Out of Stock
+                                            </button>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="quantity" class="form-label">Quantity:</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="1" min="1" max="10">
+                        </div>
+
+                        <div class="mb-4">
+                            <h5>
+                                Price: <span id="total-price" class="text-success">₹{{ variants.0.price }}</span>
+                            </h5>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100">
+                            🛒 Add to Cart
+                        </button>
+                    </form>
+
+                    <script>
+                        // Update form action and price when variant changes
+                        document.querySelectorAll('.variant-radio').forEach(radio => {
+                            radio.addEventListener('change', function() {
+                                document.getElementById('add-to-cart-form').action = 
+                                    `/cart/add/${this.value}/`;
+                                updatePrice();
+                            });
+                        });
+
+                        // Update quantity or price
+                        document.getElementById('quantity').addEventListener('change', updatePrice);
+
+                        function updatePrice() {
+                            const selectedVariant = document.querySelector('.variant-radio:checked');
+                            const quantity = parseInt(document.getElementById('quantity').value) || 1;
+                            const price = parseFloat(selectedVariant.dataset.price);
+                            const total = (price * quantity).toFixed(2);
+                            document.getElementById('total-price').textContent = '₹' + total;
+                        }
+                    </script>
+                {% else %}
+                    <p class="text-danger">Currently out of stock</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Stock Info -->
+        <div class="alert alert-info">
+            <strong>📦 Quick Info:</strong><br>
+            ✓ Free shipping on orders above ₹500<br>
+            ✓ 7-day money-back guarantee<br>
+            ✓ 100% authentic Kashmiri saffron
+        </div>
+    </div>
+</div>
+
+{% endblock %}
